@@ -12,10 +12,20 @@ import { useState } from "react"
 
 
 
-export default function App() {
-    const arrForca = [img0, img1, img2, img3, img4, img5, img6]
-    const [word, setWord] = useState("")
 
+export default function App() {
+    const [forcaImg, setForcaImg] = useState(img0)
+    const [word, setWord] = useState("")
+    const [displayLetra, setDisplayLetra] = useState([])
+    const [letrasUtilizadas, setLetrasUtilizadas] = useState([])
+    const [letrasAcertadas, setLetrasAcertadas] = useState([])
+    const [letrasErradas, setLetrasErradas] = useState([])
+    const [gameRunning, setGameRunning] = useState(false);
+    console.log("palavra escolhida: " + word)
+    console.log('palavra mostrada: ' + displayLetra)
+    console.log('letras utilizadas: ' + letrasUtilizadas)
+    console.log('letras erradas: ' + letrasErradas)
+    console.log('letras acertadas: ' + letrasAcertadas)
     function Forca(props) {
         return (
             <div className="forca">
@@ -24,9 +34,24 @@ export default function App() {
         )
     }
 
+
     function chooseWord() {
+        setGameRunning(true)
         let rand = Math.floor(Math.random() * palavras.length)
+        console.log(palavras[rand])
         setWord(palavras[rand])
+
+        const wordArray = palavras[rand].split('')
+        console.log(wordArray)
+        const palavra = wordArray.map((letra) => {
+            for (let i = 0; i < letrasAcertadas.length; i++) {
+                if (letrasAcertadas[i] === letra) {
+                    return letrasAcertadas[i] + " "
+                }
+            }
+            return "_ "
+        })
+        setDisplayLetra(palavra)//e#177742
     }
 
     function ChooseButton() {
@@ -37,31 +62,73 @@ export default function App() {
         )
     }
 
-    function Word(p) {
+
+
+    function updateLetters(p) {
+        console.log("update")
+        console.log(word)
+        console.log(displayLetra)
         console.log(p)
-        let underlined = p.word.split('')
-        let a = underlined.map((e) => e = ' _ ')
+        //["_","_","_","_","_"]
+        //["o","s","c","a","r"]
+
+        const wordArray = word.split('')
+        const palavra = wordArray.map((letra) => {
+            for (let i = 0; i < p.length; i++) {
+                if (p[i] === letra) {
+                    return p[i] + " "
+                }
+            }
+            return "_ "
+        })
+        setDisplayLetra(palavra)//e#177742
+    }
+
+    function Word() {
         return (
             <>
-                <span className="teste">{a}</span>
+                <span className="wordToGuess">{displayLetra}</span>
             </>
         )
     }
 
-    function alertar(p) {
-        console.log(p)
-    }
+
+    function handleClick(letra, index) {
+        if (!letrasUtilizadas.includes(index)) {
+            const arrLetrasUtilizadas = [...letrasUtilizadas, index]
+            const arrLetrasAcertadas = [...letrasAcertadas, letra]
+            const arrLetrasErradas = [...letrasErradas, letra]
+
+            setLetrasUtilizadas(arrLetrasUtilizadas)
+            if (word.includes(letra)) {
+                setLetrasAcertadas(arrLetrasAcertadas)
+                updateLetters(arrLetrasAcertadas)
+            }
+            else {
+                setLetrasErradas(arrLetrasErradas)
+            }
+        }
+    };
+
 
     function Letter(props) {
-        return (
-            <>
-                <button className="letter" onClick={() => alertar(props.letra)}>{props.letra}</button>
-            </>
-        )
+        if (gameRunning === false) {
+            return (
+                <>
+                    <button disabled={true} className="letter" onClick={() => handleClick(props.letra, props.index)} >{props.letra.toUpperCase()}</button>
+                </>
+            )
+        } else {
+            return (
+                <>
+                    <button disabled={(!letrasUtilizadas.includes(props.index)) ? false : true} className="letter" onClick={() => handleClick(props.letra, props.index)} >{props.letra.toUpperCase()}</button>
+                </>
+            )
+        }
     }
 
     function Letters() {
-        return alfabeto.map((l) => <Letter letra={l} key={l} />)
+        return alfabeto.map((l, index) => <Letter letra={l} key={index} index={index} />)
     }
 
     return (
@@ -69,11 +136,11 @@ export default function App() {
             <div className="app">
                 <div className="topo">
                     <div className="forca-left">
-                        <Forca img={arrForca[0]} />
+                        <Forca img={forcaImg} />
                     </div>
                     <div className="forca-right">
                         <ChooseButton />
-                        <Word word={word} />
+                        <Word />
                     </div>
                 </div>
 
@@ -82,7 +149,7 @@ export default function App() {
                         <Letters />
                     </div>
                     <div className="guess">
-                        <span>input do chute</span>
+                        <span onClick={updateLetters}>input do chute</span>
                     </div>
                 </div>
             </div>

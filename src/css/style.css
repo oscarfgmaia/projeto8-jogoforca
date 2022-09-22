@@ -8,7 +8,7 @@
     margin-top: 30px;
     margin-left: auto;
     margin-right: auto;
-    width: 80%;
+    width: 900px;
     display: flex;
     justify-content: space-around;
     align-items: flex-start;
@@ -39,7 +39,7 @@
 
 }
 
-.teste{
+.wordToGuess{
     display: flex;
     justify-content: center;
     background-color: red;
@@ -47,17 +47,19 @@
 }
 
 .botton {
+    background-color: yellow;
     margin-top: 30px;
     margin-left: auto;
     margin-right: auto;
-    width: 80%;
+    width: 650px;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
+
 .letters{
     background-color: violet;
-    width: 80%;
+    width: 650px;
     height: 100px;
     display: flex;
     justify-content: center;
@@ -68,7 +70,9 @@
     width: 30px;
     height: 30px;
     font-size: 15px;
+    
 }
+
 
 .guess{
     margin-top: 15px;
