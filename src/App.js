@@ -14,7 +14,6 @@ export default function App() {
   const [imgIndex, setImgIndex] = useState(0);
   const imgs = [img0, img1, img2, img3, img4, img5, img6];
   const [forcaImg, setForcaImg] = useState(imgs[imgIndex]);
-  console.log(forcaImg);
   const [word, setWord] = useState("");
   const [displayLetra, setDisplayLetra] = useState([]);
   const [letrasUtilizadas, setLetrasUtilizadas] = useState([]);
@@ -43,7 +42,6 @@ export default function App() {
     setLetrasUtilizadas([]);
     setLetrasAcertadas([]);
     setLetrasErradas([]);
-    setWord("");
     setImgIndex(0);
     setForcaImg(imgs[0]);
     let rand = Math.floor(Math.random() * palavras.length);
@@ -51,15 +49,9 @@ export default function App() {
     setWord(palavras[rand]);
 
     const wordArray = palavras[rand].split("");
-    console.log(wordArray);
-    const palavra = wordArray.map((letra) => {
-      for (let i = 0; i < letrasAcertadas.length; i++) {
-        if (letrasAcertadas[i] === letra) {
-          return letrasAcertadas[i] + " ";
-        }
-      }
-      return "_ ";
-    });
+    console.log("arr incial");
+    console.log(wordArray)
+    const palavra = wordArray.map((letra) => letra = "_ ")
     setDisplayLetra(palavra); //e#177742
   }
 
@@ -78,6 +70,13 @@ export default function App() {
     texto = texto.replace(/[ÀÁÂÃÄÅ]/, "A");
     texto = texto.replace(/[àáâãäå]/, "a");
     texto = texto.replace(/[ÈÉÊË]/, "E");
+    texto = texto.replace(/[èéêẽ]/, "e");
+    texto = texto.replace(/[ÌÍÎĨ]/, "I");
+    texto = texto.replace(/[ìíîĩ]/, "i");
+    texto = texto.replace(/[ÒÓÔÕ]/, "O");
+    texto = texto.replace(/[òóôõ]/, "o");
+    texto = texto.replace(/[ÙÚÛŨ]/, "U");
+    texto = texto.replace(/[úùûũ]/, "u");
     texto = texto.replace(/[Ç]/, "C");
     texto = texto.replace(/[ç]/, "c");
     return texto.replace(/[^a-z0-9]/gi, "");
@@ -89,12 +88,15 @@ export default function App() {
     //["_","_","_","_","_"]
     //["o","s","c","a","r"]
     //TODO - FINALIZAR A TRANSOFORMAÇÃO DAS ACENTUAÇÕES
+    const wordWithoutSpecials = removerSpecials(word)
     const wordArray = word.split("");
-    let palavraSemAcento = removerSpecials(wordArray)
-    const palavra = wordArray.map((letra) => {
+    const wordArrayWithoutSpecials = wordWithoutSpecials.split('')
+    console.log(wordArray)
+    console.log(wordArrayWithoutSpecials)
+    const palavra = wordArrayWithoutSpecials.map((letra, index) => {
       for (let i = 0; i < p.length; i++) {
         if (p[i] === letra) {
-          return p[i] + " ";
+          return wordArray[index] + " ";
         }
       }
       return "_ ";
@@ -117,7 +119,9 @@ export default function App() {
       const arrLetrasAcertadas = [...letrasAcertadas, letra];
 
       setLetrasUtilizadas(arrLetrasUtilizadas);
-      if (word.includes(letra)) {
+      const wordWithoutSpecials = removerSpecials(word)
+      console.log('word sem special '+wordWithoutSpecials)
+      if (wordWithoutSpecials.includes(letra)) {
         setLetrasAcertadas(arrLetrasAcertadas);
         updateLetters(arrLetrasAcertadas);
       } else {
@@ -139,7 +143,6 @@ export default function App() {
       resetImgIndex();
     }
   }
-  console.log(imgIndex);
 
   function Letter(props) {
     if (gameRunning === false) {
