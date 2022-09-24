@@ -45,7 +45,6 @@
 }
 
 .botton {
-    background-color: yellow;
     margin-top: 30px;
     margin-left: auto;
     margin-right: auto;
@@ -56,7 +55,6 @@
 }
 
 .letters{
-    background-color: violet;
     width: 650px;
     height: 100px;
     display: flex;
@@ -68,12 +66,25 @@
     width: 30px;
     height: 30px;
     font-size: 15px;
-    
 }
-
+button{
+    background-color: rgba(143, 201, 201);
+    border-radius: 5px;
+    border: 1px;
+    color:rgb(0, 0,0);
+    border-color: rgba(0, 0,0,0.25);;
+    border-style: solid;
+}
+button:disabled{
+    background-color: rgba(143, 201, 201, 0.25);
+    border-radius: 5px;
+    border: 1px;
+    color:rgba(0, 0,0,0.25);
+    border-color: rgba(0, 0,0,0.25);;
+    border-style: solid;
+}
 
 .guess{
     margin-top: 15px;
-    background-color: red;
     width: 100%;
 }
