@@ -21,7 +21,6 @@ export default function App() {
   const [letrasErradas, setLetrasErradas] = useState([]);
   const [gameRunning, setGameRunning] = useState(false);
   const [winOrLose, setWinOrLose] = useState("");
-  console.log("palavra escolhida: " + word);
   // console.log("palavra mostrada: " + displayLetra);
   // console.log("letras utilizadas index: " + letrasUtilizadas);
   // console.log("letras erradas: " + letrasErradas);
@@ -47,12 +46,9 @@ export default function App() {
     setImgIndex(0);
     setForcaImg(imgs[0]);
     let rand = Math.floor(Math.random() * palavras.length);
-    console.log(palavras[rand]);
     setWord(palavras[rand]);
     const wordArray = palavras[rand].split("");
-    console.log("arr incial");
-    console.log(wordArray);
-    const palavra = wordArray.map((letra) => (letra = "_ "));
+    const palavra = wordArray.map((letra) => (letra = "_"));
     setDisplayLetra(palavra); //e#177742
   }
 
@@ -84,23 +80,19 @@ export default function App() {
   }
 
   function updateLetters(p) {
-    console.log("update");
-    console.log(p);
     //["_","_","_","_","_"]
     //["o","s","c","a","r"]
     //TODO - FINALIZAR A TRANSOFORMAÇÃO DAS ACENTUAÇÕES
     const wordWithoutSpecials = removeSpecials(word);
     const wordArray = word.split("");
     const wordArrayWithoutSpecials = wordWithoutSpecials.split("");
-    console.log(wordArray);
-    console.log(wordArrayWithoutSpecials);
     const palavra = wordArrayWithoutSpecials.map((letra, index) => {
       for (let i = 0; i < p.length; i++) {
         if (p[i] === letra) {
-          return wordArray[index] + " ";
+          return wordArray[index];
         }
       }
-      return "_ ";
+      return "_";
     });
 
     verifyRightAnswer(palavra);
@@ -122,7 +114,6 @@ export default function App() {
 
       setLetrasUtilizadas(arrLetrasUtilizadas);
       const wordWithoutSpecials = removeSpecials(word);
-      console.log("word sem special " + wordWithoutSpecials);
       if (wordWithoutSpecials.includes(letra)) {
         setLetrasAcertadas(arrLetrasAcertadas);
         updateLetters(arrLetrasAcertadas);
@@ -139,7 +130,6 @@ export default function App() {
     setForcaImg(imgs[indexOf + 1]);
     setLetrasErradas(arrLetrasErradas);
     if (indexOf + 1 === 6) {
-      console.log("GAME OVER");
       setWinOrLose("lose");
       setGameRunning(false);
       setDisplayLetra(word);
@@ -152,7 +142,6 @@ export default function App() {
     guessed = guessed.replaceAll(" ", "");
     guessed = guessed.replaceAll("_", "");
     if (guessed === word) {
-      console.log("GANHOU");
       setWinOrLose("win");
       setGameRunning(false);
       setDisplayLetra(word);
@@ -194,6 +183,7 @@ export default function App() {
     ));
   }
   const [input, setInput] = useState("");
+
   function updateInput(event) {
     setInput(event.target.value);
   }
@@ -204,13 +194,14 @@ export default function App() {
       const wordArr = word.split("");
       for (let i = 0; i < inputArr.length; i++) {
         if (inputArr[i] !== wordArr[i]) {
-          console.log("false");
+          setInput('')
           return;
         }
       }
-      console.log("true");
       updateLetters(input);
+      setInput('')
     }
+    setInput('')
   }
 
   // function GuessArea() {
@@ -242,7 +233,7 @@ export default function App() {
           </div>
           <div className="guess">
             <span>Já sei a palavra!</span>
-            <input onChange={updateInput}></input>
+            <input onChange={updateInput} value={input}></input>
             <button onClick={guessWord}>Chutar</button>
           </div>
         </div>
