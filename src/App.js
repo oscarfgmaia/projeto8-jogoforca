@@ -194,14 +194,27 @@ export default function App() {
       const wordArr = word.split("");
       for (let i = 0; i < inputArr.length; i++) {
         if (inputArr[i] !== wordArr[i]) {
-          setInput('')
+          setInput("");
+          setWinOrLose("lose");
+          setGameRunning(false);
+          setDisplayLetra(word);
+          setForcaImg(imgs[6]);
           return;
         }
       }
       updateLetters(input);
-      setInput('')
+      setInput("");
+      return;
     }
-    setInput('')
+    if (input != "") {
+      setInput("");
+      setWinOrLose("lose");
+      setGameRunning(false);
+      setDisplayLetra(word);
+      setForcaImg(imgs[6]);
+    } else {
+      setInput("");
+    }
   }
 
   // function GuessArea() {
@@ -233,7 +246,11 @@ export default function App() {
           </div>
           <div className="guess">
             <span>Já sei a palavra!</span>
-            <input onChange={updateInput} value={input}></input>
+            <input
+              onChange={updateInput}
+              value={input}
+              disabled={gameRunning ? false : true}
+            ></input>
             <button onClick={guessWord}>Chutar</button>
           </div>
         </div>
