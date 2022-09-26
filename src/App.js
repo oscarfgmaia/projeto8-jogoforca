@@ -21,6 +21,7 @@ export default function App() {
   const [letrasErradas, setLetrasErradas] = useState([]);
   const [gameRunning, setGameRunning] = useState(false);
   const [winOrLose, setWinOrLose] = useState("");
+  // console.log(word)
   // console.log("palavra mostrada: " + displayLetra);
   // console.log("letras utilizadas index: " + letrasUtilizadas);
   // console.log("letras erradas: " + letrasErradas);
@@ -28,7 +29,7 @@ export default function App() {
   function Forca(props) {
     return (
       <div className="forca">
-        <img src={props.img} alt={props.img}></img>
+        <img src={props.img} alt={props.img} data-identifier="game-image"></img>
       </div>
     );
   }
@@ -55,7 +56,7 @@ export default function App() {
   function ChooseButton() {
     return (
       <div className="chooseWord">
-        <button className="chooseWord-btn" onClick={chooseWord}>
+        <button className="chooseWord-btn" onClick={chooseWord} data-identifier="choose-word">
           Escolher Palavra
         </button>
       </div>
@@ -102,7 +103,7 @@ export default function App() {
   function Word() {
     return (
       <>
-        <span className={"wordToGuess " + winOrLose}>{displayLetra}</span>
+        <span className={"wordToGuess " + winOrLose} data-identifier="word">{displayLetra}</span>
       </>
     );
   }
@@ -157,6 +158,7 @@ export default function App() {
             disabled={true}
             className="letter"
             onClick={() => handleClick(props.letra, props.index)}
+            data-identifier="letter"
           >
             {props.letra.toUpperCase()}
           </button>
@@ -169,6 +171,7 @@ export default function App() {
             disabled={!letrasUtilizadas.includes(props.index) ? false : true}
             className="letter"
             onClick={() => handleClick(props.letra, props.index)}
+            data-identifier="letter"
           >
             {props.letra.toUpperCase()}
           </button>
@@ -190,7 +193,8 @@ export default function App() {
 
   function guessWord() {
     if (input.length === word.length) {
-      const inputArr = input.split("");
+      const inputLower = input.toLowerCase();
+      const inputArr = inputLower.split("");
       const wordArr = word.split("");
       for (let i = 0; i < inputArr.length; i++) {
         if (inputArr[i] !== wordArr[i]) {
@@ -202,7 +206,7 @@ export default function App() {
           return;
         }
       }
-      updateLetters(input);
+      updateLetters(inputLower);
       setInput("");
       return;
     }
@@ -250,8 +254,9 @@ export default function App() {
               onChange={updateInput}
               value={input}
               disabled={gameRunning ? false : true}
+              data-identifier="type-guess"
             ></input>
-            <button onClick={guessWord}>Chutar</button>
+            <button onClick={guessWord} data-identifier="guess-button">Chutar</button>
           </div>
         </div>
       </div>
